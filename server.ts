@@ -1,7 +1,7 @@
 import app from './src/app';
 
-const port = process.env.PORT
+const PORT: string | undefined = process.env.PORT
 
-app.listen(port, () => {
-    console.log(`Servidor rodando.`)
+app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`)
 })
