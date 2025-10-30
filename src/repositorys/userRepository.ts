@@ -69,6 +69,8 @@ const remove = async (id: number) => {
     }
 }
 
+
+
 export default {
     finOne,
     findAll,

@@ -1,20 +1,15 @@
-import Model from "../../Model";
-const getOne = async (id) => {
+import userRepository from "../../repositorys/userRepository";
+import UserModelInterface from "../../Model/User/Interface/UserModelInterface";
+
+const getOne = async (id: number): Promise<UserModelInterface | null> => {
+
     try {
-        const user = await Model.User.findOne({
-            where: {
-                id: id,
-            },
-        });
-
-        if (!user) {
-            return false;
-        }
-
+        const user = await userRepository.finOne(id)
         return user;
-    } catch (error) {
-        throw new Error(error.message);
+    } catch (error: any) {
+        throw new Error(error);
     }
+
 };
 
 export default getOne

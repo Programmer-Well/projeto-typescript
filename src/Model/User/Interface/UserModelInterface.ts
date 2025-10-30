@@ -5,7 +5,6 @@ interface UserModelInterface extends Model {
     name: string,
     email: string,
     password: string,
-    status: boolean,
     createdAt: string,
     updatedAt: string
 }

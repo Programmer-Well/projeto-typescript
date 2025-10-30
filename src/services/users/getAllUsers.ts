@@ -1,8 +1,10 @@
-import User from "../../model/users/Users.js"
+import userRepository from "../../repositorys/userRepository";
+import UserModelInterface from "../../Model/User/Interface/UserModelInterface";
 
-async function getAll(req, res){
-    const users = await User.findAll()
-    return users
-}
+const getAll = async (): Promise<UserModelInterface[]> => {
+
+    return userRepository.findAll()
+
+};
 
 export default getAll

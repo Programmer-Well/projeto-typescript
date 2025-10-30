@@ -1,109 +1,104 @@
-import {Request, Response} from 'express'
+import { Request, Response } from 'express'
+import createUsers from '../../services/users/createUsers'
+import auth from '../../services/users/auth'
 
-const getUser = async (req: Request, res: Response): Promise<void> => {
-    res.json({
-        user: {
-            name: req.user.name,
-            email: req.user.email,
-            id: req.user.id
+async function getUsers() {
+
+}
+
+const createUser = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const validPayload = createUsers.validPayload(req.body)
+
+        if (!validPayload) {
+            res.status(400)
+            res.json({
+                message: "Email, password and name is required"
+            })
+            return
         }
-    })
+
+        const userExist = await createUsers.userExist(req.body.id)
+
+        if (userExist) {
+            res.status(400)
+            res.json({
+                message: "Usuario com esse ID já existe."
+            })
+            return
+        }
+
+        const newUser = await createUsers.create(req.body)
+
+        if (!newUser) {
+            res.status(500)
+            res.json({
+                message: "Não foi possivel criar"
+            })
+            return
+        }
+
+        res.json({
+            message: "usuário criado com sucesso"
+        })
+    } catch (error) {
+        res.status(500)
+        res.json({
+            message: "Ocorreu um erro tente novamente mais tarde"
+        })
+    }
+}
+const getUser = async (req: Request, res: Response): Promise<void> => {
+
 }
 
-async function getUsers(req, res) {
-    const users = await getAll()
+async function updateUsers() {
 
-    res.status(200)
-    res.json({
-        data: users
-    });
 }
 
-const createUser = async (req, res) => {
-    const { name, email, password } = req.body
+async function removeUsers() {
 
-    if (!name || !email || !password) {
-        res.status(400)
-        res.json({
-            message: "os campos name, email e password é obrigatorio"
-        })
-        return
-    }
 
-    const user = await create(req.body)
-
-    res.status(201)
-    res.json({
-        token: user.token
-    })
 }
 
-async function updateUsers(req, res) {
-    const data = req.body
-    const id = req.params.id
+const authUser = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const validPayload = auth.validPayload(req.body)
 
-    const user = await update(data, id)
+        if (!validPayload) {
+            res.status(400)
+            res.json({
+                message: "Email and password is required"
+            })
+            return
+        }
+        const user = await auth.auth(req.body.email, req.body.password)
 
-    if (!user) {
-        res.status(400)
+        if (!user) {
+            res.status(400)
+            res.json({
+                message: "Email ou senha inválidos"
+            })
+            return
+        }
+
+        const token = auth.createToken(user)
+
+        if (!token) {
+            res.status(500)
+            res.json({
+                message: "Houve um erro ao gerar o token"
+            })
+            return
+        }
+
+        res.json(token)
+    } catch (error) {
+        res.status(500)
         res.json({
-            message: "Não foi possivel atualizar"
+            message: "Ocorreu um erro tente novamente mais tarde"
         })
-        return
     }
-
-    res.status(200)
-    res.json({
-        message: "Atualizado com sucesso",
-        user
-    })
-}
-
-async function removeUsers(req, res) {
-    const id = req.params.id
-
-    const user = await remove(id)
-
-    if (!user) {
-        res.status(400)
-        res.json({
-            message: `Usuário ${id} não encontrado!`
-        })
-        return
-    }
-
-    res.status(200)
-    res.json({
-        message: "Deletado com sucesso",
-        user
-    })
-}
-
-const auth = async (req, res) => {
-    const { email, password } = req.body
-
-    if (!email || !password) {
-        res.status(400)
-        res.json({
-            message: "email e senha obrigatorio"
-        })
-        return
-    }
-
-    const user = await login(email, password)
-
-    if (!user) {
-        res.status(401)
-        res.json({
-            message: "email ou senha invalidos"
-        })
-        return
-    }
-
-    res.json({
-        message: "login realizado com sucesso",
-        token: user.token
-    })
 }
 
 export default {
@@ -112,5 +107,5 @@ export default {
     createUser,
     updateUsers,
     removeUsers,
-    auth,
+    authUser,
 }

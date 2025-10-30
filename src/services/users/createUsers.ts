@@ -29,7 +29,7 @@ const create = async (user: Partial<UserModelInterface>): Promise<UserModelInter
 }
 
 const userExist = async (id: number): Promise<boolean> => {
-    const user = await userRepository.finOne(id)
+    const user = await userRepository.finOne(id) 
 
     if (user) {
         return true
@@ -38,10 +38,8 @@ const userExist = async (id: number): Promise<boolean> => {
     return false
 }
 
-
 export default {
-
     validPayload,
     create,
-    userExist,
+    userExist
 }
