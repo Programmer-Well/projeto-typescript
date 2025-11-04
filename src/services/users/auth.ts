@@ -12,8 +12,8 @@ const validPayload = (payload: ValidPayloadAuthInterface): boolean  => {
     return true
 }
 
-const auth = async (id: number, password: string): Promise<UserModelInterface | null> => {
-    const user = await userRepository.finOne(id)
+const auth = async (email: string, password: string): Promise<UserModelInterface | null> => {
+    const user = await userRepository.findByEmail(email)
     if (!user) {
         return null
     }

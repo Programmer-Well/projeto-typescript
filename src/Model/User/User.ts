@@ -1,7 +1,6 @@
 import { DataTypes } from "@sequelize/core";
 import connection from "../../config/database";
 import UserModelInterface from "./Interface/UserModelInterface";
-import 'dotenv/config'; 
 
 const User = connection.define<UserModelInterface>('user', {
     name: {
@@ -13,7 +12,7 @@ const User = connection.define<UserModelInterface>('user', {
         allowNull: false
     },
     password: {
-        type: DataTypes.STRING(60),
+        type: DataTypes.STRING,
         allowNull: false
     },
 })

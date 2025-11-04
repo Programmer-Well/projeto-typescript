@@ -1,10 +1,10 @@
 import userRepository from "../../repositorys/userRepository";
 import UserModelInterface from "../../Model/User/Interface/UserModelInterface";
 
-const getAll = async (): Promise<UserModelInterface[]> => {
+const getAllUsers = async (): Promise<UserModelInterface[]> => {
 
     return userRepository.findAll()
 
 };
 
-export default getAll
+export default getAllUsers

@@ -28,8 +28,8 @@ const create = async (user: Partial<UserModelInterface>): Promise<UserModelInter
     }
 }
 
-const userExist = async (id: number): Promise<boolean> => {
-    const user = await userRepository.finOne(id) 
+const userExist = async (email: string): Promise<boolean> => {
+    const user = await userRepository.findByEmail(email) 
 
     if (user) {
         return true

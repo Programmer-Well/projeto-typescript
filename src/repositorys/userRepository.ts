@@ -1,16 +1,29 @@
 import User from "../Model/User/User";
 import UserModelInterface from "../Model/User/Interface/UserModelInterface";
 
+
+const findByEmail = async (email: string): Promise<UserModelInterface | null> => {
+    try {
+        const user = await User.findOne({
+            where: {
+                email
+            }
+        })
+
+        return user
+    } catch (error: any) {
+        throw new Error(error);
+    }
+}
+
 const finOne = async (id: number): Promise<UserModelInterface | null> => {
     try {
-
-        const user = await User.findOne({
+        const users = await User.findOne({
             where: {
                 id
             }
-        })
-        return user
-
+        });
+        return users;
     } catch (error: any) {
         throw new Error(error);
     }
@@ -42,18 +55,18 @@ const update = async (user: Partial<UserModelInterface>, id: number) => {
             }
         })
 
-        if (updateUser[0] ==0){
+        if (updateUser[0] == 0) {
             return false
         }
 
+        return true;
     } catch (error: any) {
         throw new Error(error);
     }
 }
 
-const remove = async (id: number) => {
+const destroy = async (id: number) => {
     try {
-
         const user = await User.destroy({
             where: {
                 id
@@ -64,17 +77,17 @@ const remove = async (id: number) => {
             return false
         }
 
+        return true;
     } catch (error: any) {
         throw new Error(error);
     }
 }
-
-
 
 export default {
     finOne,
     findAll,
     create,
     update,
-    remove,
+    destroy,
+    findByEmail
 }

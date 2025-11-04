@@ -1,7 +1,7 @@
 import userRepository from "../../repositorys/userRepository";
 import UserModelInterface from "../../Model/User/Interface/UserModelInterface";
 
-const getOne = async (id: number): Promise<UserModelInterface | null> => {
+const getOneUsers = async (id: number): Promise<UserModelInterface | null> => {
 
     try {
         const user = await userRepository.finOne(id)
@@ -12,4 +12,4 @@ const getOne = async (id: number): Promise<UserModelInterface | null> => {
 
 };
 
-export default getOne
+export default getOneUsers

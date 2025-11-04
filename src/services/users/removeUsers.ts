@@ -1,15 +1,12 @@
-import User from "../../model/users/Users.js"
+import userRepository from "../../repositorys/userRepository"
 
-const remove = async (id) => {
-    const user = await User.destroy({
-        where:{
-            id
-        }
-    })
-    
-    if(!user){
-        return false
+const destroy = async (id: number): Promise<boolean> => {
+    try {
+        return await userRepository.destroy(id)
+    } catch (error: any) {
+        throw new Error(error);
     }
-    return user
 }
-export default remove
+export default {
+    destroy
+}

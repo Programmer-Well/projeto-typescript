@@ -1,21 +1,12 @@
-import express, {Request, Response, NextFunction} from 'express'
+import express, { Request, Response, NextFunction } from 'express'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import userRepository from '../repositorys/userRepository'
-import UserModelInterface from '../Model/User/Interface/UserModelInterface'
-
-declare global {
-    namespace Express {
-        export interface Request {
-            user: UserModelInterface
-        }
-    }
-}
 
 interface decodedIterface extends JwtPayload {
+    id: number,
     email: string
 }
-
-const auth = async (req: any, res:Response , next:NextFunction) => {
+const auth = async (req: any, res: Response, next: NextFunction) => {
     try {
         const authHeader = req.headers.authorization
 
@@ -38,9 +29,9 @@ const auth = async (req: any, res:Response , next:NextFunction) => {
 
         const JWT_SECRET: string | undefined = process.env.JWT_SECRET
 
-        if (!JWT_SECRET) { 
+        if (!JWT_SECRET) {
             res.status(500)
-                res.json({
+            res.json({
                 message: "correu um erro tente novamente mais tarde"
             })
             return
@@ -58,14 +49,6 @@ const auth = async (req: any, res:Response , next:NextFunction) => {
 
         const user = await userRepository.finOne(decoded.id)
         if (!user) {
-            res.status(401)
-            res.json({
-                message: "Não autorizado"
-            })
-            return
-        }
-
-        if (!user.status) {
             res.status(401)
             res.json({
                 message: "Não autorizado"
