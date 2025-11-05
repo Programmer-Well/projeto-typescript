@@ -1,121 +1,57 @@
-import create from "../../services/products/createProducts.js"
-import getAll from "../../services/products/getAllProducts.js";
-import getOne from "../../services/products/getOneProducts.js";
-import remove from "../../services/products/removeProducts.js";
-import update from "../../services/products/updateProducts.js";
+import { Request, Response } from "express";
+import getAllProducts from "../../services/products/getAllProducts";
+import createProducts from "../../services/products/createProducts";
 
-async function getProduct(req, res) {
+const getProducts = async (req: Request, res: Response): Promise<void> => {
     try {
-        const id = req.params.id;
+        const products = await getAllProducts()
 
-        if (!id) {
-            res.status(400);
-            res.json({
-                message: "id é obrigatório",
-            });
-            return;
-        }
-
-        const product = await getOne(id)
-
-        if (!product) {
-            res.status(404);
-            res.json({
-                message: "Produto não encontrado",
-            });
-            return;
-        }
-
-        res.status(200);
-
-        res.json({
-            data: product
-        });
-
+        res.status(200).json(products)
     } catch (error) {
-        console.log(error);
-        res.status(500);
+        res.status(500)
         res.json({
-            message: "ocorreu um erro",
-        });
+            message: "Ocorreu um erro tente novamente mais tarde"
+        })
     }
 }
 
-async function getProducts(req, res) {
-
-    const products = await getAll()
-    res.status(200)
-    res.json({
-        data: products
-    });
+const getProduct = async (req: Request, res: Response): Promise<void> => {
 }
 
+const createProducts = async (req: Request, res: Response): Promise<void> => {
+    try{ 
 
-const createProducts = async (req, res) => {
-    try {
-
-        const productData = req.body;
-
-
-        if (!productData.name || !productData.value || !productData.categoryId) {
-            return res.status(400).json({ message: "Nome, valor e categoryId são obrigatórios." });
+    const newUser = await createProducts(req.body)
+    
+            if (!newUser) {
+                res.status(500)
+                res.json({
+                    message: "Não foi possivel criar"
+                })
+                return
+            }
+    
+            res.json({
+                message: "usuário criado com sucesso"
+            })
+        } catch (error) {
+            res.status(500)
+            res.json({
+                message: "Ocorreu um erro tente novamente mais tarde"
+            })
         }
-
-        const newProduct = await create(productData);
-
-        return res.status(201).json(newProduct);
-
-    } catch (error) {
-
-        console.error("Erro ao criar produto:", error.message);
-        return res.status(404).json({ message: error.message });
-    }
-};
-
-async function updateProducts(req, res) {
-    const data = req.body
-    const id = req.params.id
-
-    const product = await update(data, id)
-
-    if (!product) {
-        res.status(400)
-        res.json({
-            message: "Não foi possivel atualizar."
-        })
-        return
-    }
-
-    res.status(200)
-    res.json({
-        message: "Atualizado com sucesso!",
-        product
-    })
 }
 
-const removeProducts = async (req, res) => {
-    const id = req.params.id
-    const product = await remove(id)
+const updateProducts = async (req: Request, res: Response): Promise<void> => {
+}
 
-    if (!product) {
-        res.status(400)
-        res.json({
-            message: "Erro na operação"
-        })
-        return
-    }
-
-    res.status(200)
-    res.json({
-        message: "Deletado com sucesso",
-        product
-    })
+const removeProducts = async (req: Request, res: Response): Promise<void> => {
 }
 
 export default {
     getProduct,
     getProducts,
     createProducts,
-    removeProducts,
     updateProducts,
+    removeProducts,
 }

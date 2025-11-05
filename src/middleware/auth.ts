@@ -1,6 +1,15 @@
 import express, { Request, Response, NextFunction } from 'express'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import userRepository from '../repositorys/userRepository'
+import UserModelInterface from '../Model/User/Interface/UserModelInterface';
+
+declare global {
+  namespace Express {
+    export interface Request {
+      user: UserModelInterface; 
+    }
+  }
+}
 
 interface decodedIterface extends JwtPayload {
     id: number,

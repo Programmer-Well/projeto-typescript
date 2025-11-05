@@ -6,6 +6,7 @@ import destroyUserService from '../../services/users/removeUsers'
 import updateUsersService from '../../services/users/updateUsersService'
 import auth from '../../services/users/auth'
 
+
 const createUser = async (req: Request, res: Response): Promise<void> => {
     try {
         const validPayload = createUsers.validPayload(req.body)
@@ -90,7 +91,7 @@ const getUsers = async (req: Request, res: Response): Promise<void> => {
 }
 
 const updateUsers = async (req: Request, res: Response): Promise<void> => {
-    try {
+    /* try {
         const updated = await updateUsersService(req.body, req.user.id)
 
         if (!updated) {
@@ -111,11 +112,11 @@ const updateUsers = async (req: Request, res: Response): Promise<void> => {
         res.json({
             message: "Ocorreu um erro tente novamente mais tarde"
         })
-    }
+    } */
 }
 
 const removeUsers = async (req: Request, res: Response): Promise<void> => {
-    try {
+    /* try {
         const destroyed = await destroyUserService.destroy(req.user.id)
         if (!destroyed) {
             res.status(400)
@@ -134,7 +135,7 @@ const removeUsers = async (req: Request, res: Response): Promise<void> => {
         res.json({
             message: "Ocorreu um erro tente novamente mais tarde"
         })
-    }
+    } */
 
 }
 

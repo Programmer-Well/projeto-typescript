@@ -1,11 +1,8 @@
- import Product from "../../model/products/Products.js"
- import Category from "../../model/category/Category.js"
+import productRepository from "../../repositorys/productRepository";
+import ProductsModelInterface from "../../Model/Products/Interface/ProductsModelInterface";
 
- const getAll = async () => {
-    const products = await Product.findAll({
-        include: Category
-    })
-    return products
- }
+const getAllProducts = async (): Promise<ProductsModelInterface[]> => {
+    return productRepository.findAll()
+}
 
- export default getAll;
+export default getAllProducts

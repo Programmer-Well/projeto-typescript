@@ -1,7 +1,6 @@
 import { DataTypes } from "@sequelize/core";
 import connection from "../../config/database";
 import ProductsModelInterface from "./Interface/ProductsModelInterface"; 
-import 'dotenv/config'; 
 
 const Product = connection.define<ProductsModelInterface>('product', {
     name: {

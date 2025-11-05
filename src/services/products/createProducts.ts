@@ -1,23 +1,13 @@
-import Model from "../../Model";
+import productRepository from "../../repositorys/productRepository";
+import ProductsModelInterface from "../../Model/Products/Interface/ProductsModelInterface"
 
-const create = async (productData) => {
-    const { name, value, description, status, categoryId } = productData;
-    const categoryExists = await Model.Category.findByPk(categoryId);
-    
-    if (!categoryExists) {
-       
-        throw new Error("Categoria não encontrada. Não é possível criar o produto.");
-    }
+const createProducts = async (product: Partial<ProductsModelInterface>): Promise<ProductsModelInterface | null> => {
+    try{
+        const newProducts = await productRepository.create(product)
+        return newProducts
+    } catch (error: any) {
+        throw new Error(error);
+    } 
+}
 
-    const newProduct = await Model.Product.create({
-        name,
-        value,
-        description,
-        status,
-        categoryId 
-    });
-
-    return newProduct;
-};
-
-export default create;
+export default createProducts
