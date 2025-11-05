@@ -2,6 +2,9 @@ import connection from "../config/database";
 import User from "./User/User";
 import Product from "./Products/Products";
 import Category from "./Category/Cateroys";
+import 'dotenv/config'
+import Order from "./Order/Order";
+
 
 Category.hasMany(Product, {
     foreignKey: 'categoryId'
@@ -10,6 +13,8 @@ Category.hasMany(Product, {
 Product.belongsTo(Category, {
     foreignKey: 'categoryId'
 });
+
+Product.hasMany(Order)
 
 connection.sync({
     force: false,
@@ -22,4 +27,5 @@ export default {
     User,
     Product,
     Category,
+    Order,
 }
